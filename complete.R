@@ -40,8 +40,8 @@ totals$Rate <- injectRateAll()
 totalsDeaths$Rates <- injectRateDeathsAll()
 
 #Filtered anomalies, cases, deaths
-totalswo <- totals %>% filter(Rate < 2500)
-totalsDeathswo <- totalsDeaths %>% filter(Rates <100)
+totalswo <- totals %>% filter(Rate < 25000)
+totalsDeathswo <- totalsDeaths %>% filter(Rates <1000)
 
 #Write to csvs
 write.csv(totals, "C:\\Users\\enado\\covid\\confirmedrates.csv")
