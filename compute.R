@@ -10,4 +10,3 @@ sumaCD <- function(country){
   
   return(sum(listCD$Confirmed))
 }
-

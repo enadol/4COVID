@@ -1,5 +1,7 @@
 library(dplyr)
 library(rlist)
+source("funciones.R")
+
 
 #specs
 options(scipen = 999)
@@ -11,6 +13,11 @@ deaths <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/ma
 recovered <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")
 generals <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv")
 
+totals <- read.csv("https://raw.githubusercontent.com/enadol/covid/master/confirmedrates.csv")[-1]
+totalsDeaths <- read.csv("https://raw.githubusercontent.com/enadol/covid/master/deathrates.csv")[-1]
+
+
+
 totalPopUSA <- 330642330
 totalPopCanada <- 37681093
 totalPopChina <- 1439323776
@@ -19,12 +26,12 @@ totalPopAustralia <- 25499884
 
 #Inject cases
 for(i in 1:length(totals$Country)){
-totals$Cases[i] <- sumaCD(as.character(totals$Country[i]))
+  totals$Cases[i] <- sumaCD(as.character(totals$Country[i]))
 }
 
 #Inject deaths
 for(i in 1:length(totalsDeaths$Country)){
-totalsDeaths$Deaths[i] <- sumaDeaths(as.character(totalsDeaths$Country[i]))
+  totalsDeaths$Deaths[i] <- sumaDeaths(as.character(totalsDeaths$Country[i]))
 }
 
 #Compute cases rates
@@ -40,8 +47,8 @@ totals$Rate <- injectRateAll()
 totalsDeaths$Rates <- injectRateDeathsAll()
 
 #Filtered anomalies, cases, deaths
-totalswo <- totals %>% filter(Rate < 25000)
-totalsDeathswo <- totalsDeaths %>% filter(Rates <1000)
+totalswo <- totals %>% filter(Population > 1000000)
+totalsDeathswo <- totalsDeaths %>% filter(Population >1000000)
 
 #Write to csvs
 write.csv(totals, "C:\\Users\\enado\\covid\\confirmedrates.csv")
